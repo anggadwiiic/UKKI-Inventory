@@ -19,11 +19,22 @@ if (isset($_GET['q']) && !empty($_GET['q'])) {
 
 $kategori_data = query("SELECT * FROM kategori");
 
+$batas_data = 6;
+
+$halaman_aktif = isset($_GET['halaman']) ? (int)$_GET['halaman'] : 1;
+
+$offset = ($halaman_aktif - 1) * $batas_data;
+
+$query_count = "SELECT COUNT(*) AS total FROM inventaris WHERE $where_clause";
+$total_data = query($query_count)[0]['total'];
+$total_halaman = ceil($total_data / $batas_data); 
+
 $query_inventaris = "SELECT inventaris.*, kategori.nama_kategori 
                      FROM inventaris 
                      JOIN kategori ON inventaris.id_kategori = kategori.id_kategori 
                      WHERE $where_clause 
-                     ORDER BY inventaris.id_inventaris DESC";
+                     ORDER BY inventaris.id_inventaris DESC
+                     LIMIT $offset, $batas_data";
 $inventaris_data = query($query_inventaris);
 ?>
 <!DOCTYPE html>
@@ -183,6 +194,13 @@ $inventaris_data = query($query_inventaris);
         .btn-sewa:hover:not(:disabled) { background: #134E4A; }
         .btn-sewa:disabled { background: var(--border); color: var(--text-gray); cursor: not-allowed; }
 
+        /* PAGINATION */
+        .pagination { display: flex; justify-content: center; gap: 0.5rem; margin-top: 3rem; }
+        .page-link { padding: 0.5rem 1rem; border: 1px solid var(--border); border-radius: 8px; color: var(--text-dark); background: var(--white); font-weight: 500; transition: 0.2s; }
+        .page-link:hover { background: var(--border); }
+        .page-link.active { background: var(--teal-dark); color: var(--white); border-color: var(--teal-dark); }
+        .page-link.disabled { color: var(--text-gray); background: #F1F5F9; cursor: not-allowed; border-color: var(--border); }
+
         /* FOOTER */
         footer { background: #0F172A; color: #94A3B8; padding: 4rem 5% 2rem; margin-top: auto;}
         .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 2fr; gap: 4rem; max-width: 1200px; margin: 0 auto 3rem; }
@@ -256,7 +274,7 @@ $inventaris_data = query($query_inventaris);
         <div class="results-text">
             Menampilkan <?= count($inventaris_data); ?> item <?= !empty($keyword) ? "untuk pencarian '$keyword'" : ""; ?>
         </div>
-
+            
         <div class="product-grid">
             <?php if(empty($inventaris_data)): ?>
                 <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; color: var(--text-gray);">
@@ -291,10 +309,42 @@ $inventaris_data = query($query_inventaris);
                                 <button class="btn-sewa" disabled>Habis</button>
                             <?php endif; ?>
                         </div>
+
+                        <?php if ($total_halaman > 1): ?>
+                    <?php endif; ?>
                     </div>
+                    
                 <?php endforeach; ?>
             <?php endif; ?>
         </div>
+        <?php if ($total_halaman > 1): ?>
+        <div class="pagination">
+            <?php 
+            // Menyimpan parameter search & kategori agar tidak hilang saat pindah halaman
+            $url_params = "";
+            if (isset($_GET['kategori'])) $url_params .= "&kategori=" . urlencode($_GET['kategori']);
+            if (isset($_GET['q'])) $url_params .= "&q=" . urlencode($_GET['q']);
+            ?>
+
+            <?php if ($halaman_aktif > 1): ?>
+                <a href="?halaman=<?= $halaman_aktif - 1 ?><?= $url_params ?>" class="page-link">&laquo; Prev</a>
+            <?php else: ?>
+                <span class="page-link disabled">&laquo; Prev</span>
+            <?php endif; ?>
+
+            <?php for ($i = 1; $i <= $total_halaman; $i++): ?>
+                <a href="?halaman=<?= $i ?><?= $url_params ?>" class="page-link <?= ($i == $halaman_aktif) ? 'active' : '' ?>">
+                    <?= $i ?>
+                </a>
+            <?php endfor; ?>
+
+            <?php if ($halaman_aktif < $total_halaman): ?>
+                <a href="?halaman=<?= $halaman_aktif + 1 ?><?= $url_params ?>" class="page-link">Next &raquo;</a>
+            <?php else: ?>
+                <span class="page-link disabled">Next &raquo;</span>
+            <?php endif; ?>
+        </div>
+        <?php endif; ?>
     </div>
 
     <footer>
