@@ -459,23 +459,23 @@ foreach($inventaris as $inv) {
                             <label>Harga Sewa (per hari)</label>
                             <input type="number" name="harga_sewa" class="form-control" id="form_harga" min="0" value="0">
                         </div>
-
+                            
                         <div class="form-group">
                             <label>Foto Barang (Max 5MB)</label>
                             
-                            <div id="imagePreviewContainer" style="margin-bottom: 1.2rem; display: none; text-align: center; background: #FAFAFA; padding: 10px; border-radius: 8px; border: 1px dashed var(--border);">
-                                <p style="font-size: 0.75rem; color: var(--muted); margin-bottom: 0.5rem; font-weight: 500;">Gambar Saat Ini:</p>
-                                <img id="imagePreview" src="" alt="Preview" style="max-width: 100%; height: 120px; border-radius: 6px; object-fit: contain;">
+                            <div class="file-upload-box" onclick="document.getElementById('fileInput').click()" style="padding: 1rem; position: relative; min-height: 150px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                
+                                <div id="uploadPrompt">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: var(--muted); margin-bottom: 0.5rem;"></i>
+                                    <p style="font-size: 0.85rem; color: var(--muted);">Klik untuk upload gambar (JPG/PNG)</p>
+                                </div>
+                                
+                                <img id="imagePreview" src="" alt="Preview" style="display: none; max-width: 100%; max-height: 160px; border-radius: 6px; object-fit: contain;">
                             </div>
                             
-                            <div class="file-upload-box" onclick="document.getElementById('fileInput').click()">
-                                <i class="fas fa-cloud-upload-alt"></i>
-                                <p>Klik untuk upload gambar (JPG/PNG)</p>
-                            </div>
                             <input type="file" name="foto" id="fileInput" accept="image/png, image/jpeg, image/jpg" style="display:none;">
                             <p id="fileNameDisplay" style="font-size:0.75rem; color:var(--primary); margin-top:0.5rem; text-align:center;"></p>
                         </div>
-                        
                         <div class="form-group full">
                             <label>Deskripsi Barang</label>
                             <textarea name="deskripsi" class="form-control" id="form_deskripsi" placeholder="Tuliskan deskripsi umum barang..."></textarea>
@@ -522,7 +522,7 @@ foreach($inventaris as $inv) {
         
         window.onload = function() { toggleClearBtn(); };
 
-        // VALIDASI FILE SIZE DI SISI JAVASCRIPT
+        // VALIDASI FILE SIZE
         document.getElementById('fileInput').addEventListener('change', function(e) {
             if(e.target.files.length > 0) {
                 const file = e.target.files[0];
@@ -530,10 +530,19 @@ foreach($inventaris as $inv) {
                 
                 if(file.size > maxSize) {
                     alert('Gagal: Ukuran file foto maksimal 5MB!');
-                    this.value = ''; // Reset input
+                    this.value = ''; 
                     document.getElementById('fileNameDisplay').textContent = '';
+                    // Kembali ke State 1
+                    document.getElementById('imagePreview').style.display = 'none';
+                    document.getElementById('uploadPrompt').style.display = 'block';
                 } else {
-                    document.getElementById('fileNameDisplay').textContent = "File terpilih: " + file.name;
+                    document.getElementById('fileNameDisplay').textContent = "" + file.name;
+                    
+                    // Ke State 2 (Tampilkan Gambar, Sembunyikan Tulisan)
+                    const fileURL = URL.createObjectURL(file);
+                    document.getElementById('imagePreview').src = fileURL;
+                    document.getElementById('imagePreview').style.display = 'block';
+                    document.getElementById('uploadPrompt').style.display = 'none';
                 }
             }
         });
@@ -547,8 +556,11 @@ foreach($inventaris as $inv) {
             if(mode === 'add') {
                 document.getElementById('modalTitle').textContent = 'Tambah Barang';
                 
-                document.getElementById('imagePreviewContainer').style.display = 'none';
+                document.getElementById('imagePreview').style.display = 'none';
                 document.getElementById('imagePreview').src = '';
+                document.getElementById('uploadPrompt').style.display = 'block';
+                document.getElementById('fileNameDisplay').textContent = '';
+                document.getElementById('fileInput').value = '';
                 
                 document.getElementById('form_id').value = '';
                 document.getElementById('form_kode').value = '';
@@ -570,12 +582,15 @@ foreach($inventaris as $inv) {
             document.getElementById('modalTitle').textContent = 'Edit Barang';
         
             const previewImg = document.getElementById('imagePreview');
-            const previewCont = document.getElementById('imagePreviewContainer');
+            const uploadPrompt = document.getElementById('uploadPrompt');
+            
             if (data.gambar && data.gambar !== '') {
                 previewImg.src = "../assets/img/inventaris/" + data.gambar;
-                previewCont.style.display = "block";
+                previewImg.style.display = "block";
+                uploadPrompt.style.display = "none";
             } else {
-                previewCont.style.display = "none";
+                previewImg.style.display = "none";
+                uploadPrompt.style.display = "block";
             }
             
             document.getElementById('form_id').value = data.id_inventaris;
