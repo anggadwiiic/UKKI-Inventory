@@ -89,237 +89,184 @@ if (!empty($inv['spesifikasi']) && $inv['spesifikasi'] !== 'null') {
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Aclonica&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../assets/img/logo-ukki.png">
+    
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
         :root { 
             --teal-dark: #0F766E; --teal-light: #ECFDF5; --teal-soft: #F0FDF4;
             --text-dark: #1E293B; --text-gray: #64748B; --bg: #F8FAFC; 
             --white: #FFFFFF; --border: #E2E8F0;
             --cal-tersedia: #FEF3C7; --cal-terbatas: #FFEDD5; --cal-habis: #F1F5F9; --cal-pilih: #0F766E;
         }
-        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text-gray); line-height: 1.6;}
+        body { font-family: 'Poppins', sans-serif; background-color: var(--bg); color: var(--text-gray); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh;}
         h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; color: var(--text-dark); font-weight: 700; }
-        a { text-decoration: none; transition: 0.3s; }
-
-        header { padding: 1rem 5%; background: var(--white); display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border); }
-        .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        
+        /* HEADER KUSTOM */
         .logo-img { width: 45px; height: auto; filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25)); }
-        .logo-text { display: flex; flex-direction: column; justify-content: center; }
         .logo-title { font-family: 'Aclonica', sans-serif; font-size: 1.4rem; font-weight: 400; color: var(--text-dark); line-height: 1.1; }
         .logo-subtitle { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500; color: var(--text-gray); line-height: 1.2; }
         
-        .nav-links { display: flex; gap: 0.5rem; align-items: center; }
-        .nav-link { color: var(--text-gray); font-weight: 500; position: relative; padding: 0.5rem 1.2rem; border-radius: 50px; transition: all 0.3s ease; }
-        .nav-link:not(.active)::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 4px; left: 50%; transform: translateX(-50%); background-color: var(--teal-dark); transition: width 0.3s ease; }
-        .nav-link:not(.active):hover::after { width: 50%; }
-        .nav-link:not(.active):hover { color: var(--teal-dark); }
-        .nav-link.active { background: var(--teal-dark); color: var(--white); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
-        .nav-link.active:hover { background: #0F172A; transform: translateY(-2px); }
+        .nav-link-custom { color: var(--text-gray); font-weight: 500; position: relative; padding: 0.5rem 1.2rem; border-radius: 50px; transition: all 0.3s ease; text-decoration: none;}
+        .nav-link-custom:not(.active)::after { content: ''; position: absolute; width: 0; height: 2px; bottom: 4px; left: 50%; transform: translateX(-50%); background-color: var(--teal-dark); transition: width 0.3s ease; }
+        .nav-link-custom:not(.active):hover::after { width: 50%; }
+        .nav-link-custom:not(.active):hover { color: var(--teal-dark); }
+        .nav-link-custom.active { background: var(--teal-dark); color: var(--white); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
+        .nav-link-custom.active:hover { background: #0F172A; transform: translateY(-2px); color: var(--white);}
 
-        .container { max-width: 1200px; margin: 2rem auto; padding: 0 5%; }
-        .back-link { display: inline-block; color: var(--text-gray); margin-bottom: 2rem; font-weight: 500; font-size: 0.95rem; }
-        .back-link:hover { color: var(--teal-dark); }
-        .main-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: 3rem; align-items: start; }
-
-        /* Left Col */
-        .img-showcase { background: var(--white); border: 1px solid var(--border); border-radius: 16px; height: 350px; display: flex; align-items: center; justify-content: center; font-size: 8rem; color: var(--text-gray); opacity: 0.7; margin-bottom: 1.5rem;}
-        
-        .status-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; font-size: 0.9rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);}
+        /* LEFT COL (IMG & TEXT) */
+        .img-showcase { background: var(--white); border: 1px solid var(--border); border-radius: 16px; height: 350px; font-size: 8rem; color: var(--text-gray); opacity: 0.7;}
         .status-badge { color: #059669; background: var(--teal-light); padding: 0.3rem 1rem; border-radius: 50px; font-weight: 500;}
-        
-        .item-category { display: inline-block; font-size: 0.8rem; color: var(--white); background: var(--teal-dark); padding: 0.2rem 0.8rem; border-radius: 50px; margin-bottom: 0.5rem;}
-        .item-title { font-size: 2.2rem; margin-bottom: 2rem; color: var(--text-dark); line-height: 1.2;}
-        
-        .content-heading { font-size: 1.1rem; color: var(--teal-dark); margin-bottom: 0.5rem; font-family: 'Poppins', sans-serif; font-weight: 600;}
-        .content-text { font-size: 0.95rem; color: var(--text-gray); margin-bottom: 2.5rem; line-height: 1.7;}
-        
-        .specs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; font-size: 0.9rem;}
-        .specs-item { display: flex; align-items: center; gap: 10px; background: var(--bg); padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border); color: var(--text-dark); font-weight: 500;}
+        .item-category { font-size: 0.8rem; color: var(--white); background: var(--teal-dark); padding: 0.2rem 0.8rem; border-radius: 50px; margin-bottom: 0.5rem; display: inline-block;}
+        .specs-item { background: var(--bg); padding: 0.8rem 1rem; border-radius: 8px; border: 1px solid var(--border); color: var(--text-dark); font-weight: 500;}
 
-        /* Right Col Cards */
+        /* RIGHT COL (CARDS & CALENDAR) */
         .right-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; margin-bottom: 1.5rem; }
-        .card-title { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 600; color: var(--text-dark); margin-bottom: 0.5rem;}
-        .card-subtitle { font-size: 0.8rem; color: var(--text-gray); margin-bottom: 1.5rem;}
         
-        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-weight: 600; font-size: 0.9rem; color: var(--text-dark);}
-        .cal-btn { background: none; border: none; cursor: pointer; color: var(--text-gray); font-size: 1rem;}
+        /* CALENDAR SPECIFIC (DO NOT CONVERT TO BS UTILITIES) */
         .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; font-size: 0.85rem;}
         .cal-day-name { font-weight: 500; color: var(--text-gray); margin-bottom: 0.5rem; font-size: 0.75rem;}
         .cal-date { padding: 0.4rem 0; border-radius: 4px; cursor: pointer; font-weight: 500; border: 1px solid transparent;}
         .cal-empty { cursor: default; }
-        
         .cal-tersedia { background: var(--cal-tersedia); color: #B45309; }
         .cal-terbatas { background: var(--cal-terbatas); color: #C2410C; }
         .cal-habis { background: var(--cal-habis); color: #94A3B8; text-decoration: line-through; cursor: not-allowed; }
         .cal-pilih { background: var(--cal-pilih) !important; color: var(--white) !important; font-weight: 700;}
         .cal-in-range { background: var(--teal-light) !important; color: var(--teal-dark) !important; }
-
-        .cal-legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.75rem; margin-top: 1rem; align-items: center; justify-content: center;}
-        .legend-item { display: flex; align-items: center; gap: 5px; }
         .legend-box { width: 10px; height: 10px; border-radius: 2px; }
-        .selected-dates-text { background: var(--teal-light); padding: 0.8rem; border-radius: 8px; font-size: 0.85rem; color: var(--teal-dark); margin-top: 1.5rem; text-align: center;}
 
-        .qty-wrapper { display: flex; align-items: center; justify-content: space-between; border: 1px solid var(--border); border-radius: 8px; padding: 0.5rem 1rem; width: 100%;}
-        .qty-btn { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--text-dark); }
-        .qty-input { width: 40px; text-align: center; border: none; outline: none; font-weight: 600; font-family: 'Poppins'; font-size: 1rem; background: transparent;}
-        .warning-text { color: #D97706; font-size: 0.8rem; margin-top: 0.8rem; display: none; text-align: left;}
-        .warning-text.active { display: block; }
-        
-        .price-main { font-size: 1.8rem; color: var(--text-dark); font-weight: 700; font-family: 'Outfit'; margin-bottom: 0.2rem;}
-        .price-main span { font-size: 0.9rem; color: var(--text-gray); font-weight: 400;}
-        
-        .estimasi-box { background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; margin-top: 1.5rem; }
-        .est-row { display: flex; justify-content: space-between; font-size: 0.9rem; color: var(--text-gray); margin-bottom: 0.5rem;}
-        .est-total { display: flex; justify-content: space-between; font-weight: 700; color: var(--teal-dark); font-size: 1.1rem; padding-top: 0.8rem; border-top: 1px solid var(--border); margin-top: 0.5rem;}
-
-        .checklist { list-style: none; font-size: 0.85rem; color: var(--text-gray); margin-top: 1.5rem; }
-        .checklist li { margin-bottom: 0.5rem; display: flex; align-items: center; gap: 8px; }
-        
-        .btn-submit { width: 100%; padding: 1rem; background: var(--teal-dark); color: white; border: none; border-radius: 8px; font-weight: 600; font-size: 1rem; cursor: pointer; margin-top: 1.5rem; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 8px;}
+        /* QTY & PRICE */
+        .qty-input:focus { outline: none; }
+        .btn-submit { background: var(--teal-dark); color: white; transition: 0.3s; border: none; }
         .btn-submit:hover:not(:disabled) { background: #134E4A; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); transform: translateY(-2px);}
-        .btn-submit:disabled { background: var(--border); color: var(--text-gray); cursor: not-allowed; }
-
-        .alert { background: #FEE2E2; color: #B91C1C; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; border: 1px solid #FCA5A5;}
-
-        footer { background: #0F172A; color: #94A3B8; padding: 4rem 5% 2rem; margin-top: 4rem;}
-        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 2fr; gap: 4rem; max-width: 1200px; margin: 0 auto 3rem; }
-        .footer-logo { color: var(--white); font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px;}
-        .footer-col h4 { color: var(--white); margin-bottom: 1.5rem; }
-        .footer-col ul { list-style: none; }
-        .footer-col ul li { margin-bottom: 0.8rem; }
-        .footer-col a { color: #94A3B8; }
-        .footer-col a:hover { color: var(--teal-light); }
-        .social-icons { display: flex; gap: 1rem; font-size: 1.2rem; }
-        .map-box { background: #1E293B; height: 150px; border-radius: 8px; overflow: hidden; position: relative;}
-        .map-box iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
-        .footer-bottom { text-align: center; border-top: 1px solid #1E293B; padding-top: 2rem; font-size: 0.9rem; }
-
-        @media (max-width: 992px) { 
-            .main-grid { grid-template-columns: 1fr; } 
-            .footer-grid{ grid-template-columns: 1fr; gap: 2rem; } 
-            .nav-links { gap: 0; }
-        }
+        .btn-submit:disabled { background: var(--border); color: var(--text-gray); cursor: not-allowed; border: none; }
     </style>
 </head>
 <body>
 
-    <header>
-        <a href="../index.php" class="logo">
-            <img src="../assets/img/logo-ukki.png" alt="Logo UKKI" class="logo-img">
-            <div class="logo-text">
-                <span class="logo-title">UKKI Inventory</span>
-                <span class="logo-subtitle">UPN "Veteran" Jawa Timur</span>
-            </div>
-        </a>
-        <nav class="nav-links">
-            <a href="../index.php" class="nav-link">Home</a>
-            <a href="../produk.php" class="nav-link active">Katalog</a>
-            <?php if (isset($_SESSION['user_id'])): ?>
-                <a href="dashboard.php" class="nav-link">Dashboard</a>
-            <?php else: ?>
-                <a href="../auth/login.php" class="nav-link">Login</a>
-            <?php endif; ?>
-        </nav>
+    <header class="sticky-top bg-white border-bottom py-3 px-md-5">
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+            <a href="../index.php" class="text-decoration-none d-flex align-items-center gap-2">
+                <img src="../assets/img/logo-ukki.png" alt="Logo UKKI" class="logo-img">
+                <div class="logo-text d-flex flex-column justify-content-center">
+                    <span class="logo-title">UKKI Inventory</span>
+                    <span class="logo-subtitle">UPN "Veteran" Jawa Timur</span>
+                </div>
+            </a>
+            <nav class="d-none d-md-flex align-items-center gap-2">
+                <a href="../index.php" class="nav-link-custom">Home</a>
+                <a href="../produk.php" class="nav-link-custom active">Katalog</a>
+                <?php if (isset($_SESSION['user_id'])): ?>
+                    <a href="dashboard.php" class="nav-link-custom">Dashboard</a>
+                <?php else: ?>
+                    <a href="../auth/login.php" class="nav-link-custom">Login</a>
+                <?php endif; ?>
+            </nav> 
+        </div>
     </header>
 
-    <div class="container">
-        <a href="../produk.php" class="back-link"><i class="fas fa-chevron-left"></i> Kembali ke katalog</a>
+    <main class="container py-4 my-3" style="max-width: 1200px;">
+        <a href="../produk.php" class="text-decoration-none text-muted mb-4 d-inline-block fw-medium"><i class="fas fa-chevron-left"></i> Kembali ke katalog</a>
 
         <?php if(isset($error)): ?>
-            <div class="alert"><i class="fas fa-exclamation-circle"></i> <?= $error; ?></div>
+            <div class="alert alert-danger d-flex align-items-center gap-2" role="alert"><i class="fas fa-exclamation-circle"></i> <?= $error; ?></div>
         <?php endif; ?>
 
-        <div class="main-grid">
-            <div class="left-col">
-                <div class="img-showcase">
-                <?php if(!empty($inv['gambar']) && file_exists("../assets/img/inventaris/" . $inv['gambar'])): ?>
-                    <img src="../assets/img/inventaris/<?= $inv['gambar'] ?>" alt="<?= htmlspecialchars($inv['nama_barang']) ?>" style="max-width: 100%; max-height: 100%; object-fit: contain;">
-                <?php else: ?>
-                    <i class="fas fa-cube"></i>
-                <?php endif; ?>
-            </div>
+        <div class="row gy-5 gx-lg-5">
+            <div class="col-lg-7">
+                <div class="img-showcase d-flex align-items-center justify-content-center mb-4">
+                    <?php if(!empty($inv['gambar']) && file_exists("../assets/img/inventaris/" . $inv['gambar'])): ?>
+                        <img src="../assets/img/inventaris/<?= $inv['gambar'] ?>" alt="<?= htmlspecialchars($inv['nama_barang']) ?>" class="img-fluid object-fit-contain p-3 h-100">
+                    <?php else: ?>
+                        <i class="fas fa-cube"></i>
+                    <?php endif; ?>
+                </div>
                 
-                <div class="status-bar">
+                <div class="d-flex justify-content-between align-items-center mb-4 pb-3 border-bottom small">
                     <span class="status-badge">Tersedia</span>
-                    <span style="color: var(--text-gray); font-weight: 500;">Stok Tersedia: <span id="max_stock"><?= $inv['stok']; ?></span> unit</span>
+                    <span class="fw-medium text-muted">Stok Tersedia: <span id="max_stock"><?= $inv['stok']; ?></span> unit</span>
                 </div>
 
                 <div class="item-category"><?= htmlspecialchars($inv['nama_kategori']); ?></div>
-                <h1 class="item-title"><?= htmlspecialchars($inv['nama_barang']); ?></h1>
+                <h1 class="fs-2 fw-bold text-dark mb-4 lh-sm" style="font-family: 'Outfit';"><?= htmlspecialchars($inv['nama_barang']); ?></h1>
 
-                <div class="content-heading">Deskripsi Produk</div>
-                <div class="content-text">
+                <div class="fs-6 fw-semibold mb-2" style="color: var(--teal-dark);">Deskripsi Produk</div>
+                <div class="text-muted mb-5 lh-lg" style="font-size: 0.95rem;">
                     <?= nl2br(htmlspecialchars($inv['deskripsi']) ?: 'Tidak ada deskripsi.'); ?>
                 </div>
 
-                <div class="content-heading">Spesifikasi Utama</div>
-                <div class="specs-grid">
-                    <div class="specs-item"><i class="far fa-check-circle" style="color: var(--teal-dark);"></i> Kondisi: <?= htmlspecialchars($inv['kondisi_barang']); ?></div>
-                    
+                <div class="fs-6 fw-semibold mb-3" style="color: var(--teal-dark);">Spesifikasi Utama</div>
+                <div class="row g-3">
+                    <div class="col-sm-6">
+                        <div class="specs-item d-flex align-items-center gap-2"><i class="far fa-check-circle" style="color: var(--teal-dark);"></i> Kondisi: <?= htmlspecialchars($inv['kondisi_barang']); ?></div>
+                    </div>
                     <?php if(!empty($specs_array)): ?>
                         <?php foreach($specs_array as $item): ?>
-                            <div class="specs-item"><i class="far fa-check-circle" style="color: var(--teal-dark);"></i> <?= htmlspecialchars($item); ?></div>
+                        <div class="col-sm-6">
+                            <div class="specs-item d-flex align-items-center gap-2"><i class="far fa-check-circle" style="color: var(--teal-dark);"></i> <?= htmlspecialchars($item); ?></div>
+                        </div>
                         <?php endforeach; ?>
                     <?php endif; ?>
                 </div>
             </div>
 
-            <div class="right-col">
+            <div class="col-lg-5">
                 <div class="right-card">
-                    <div class="card-title"><i class="far fa-calendar-alt"></i> Pilih Tanggal</div>
-                    <p class="card-subtitle">Klik tanggal mulai dan akhir penyewaan</p>
+                    <div class="d-flex align-items-center gap-2 fs-5 fw-semibold text-dark mb-1"><i class="far fa-calendar-alt"></i> Pilih Tanggal</div>
+                    <p class="text-muted small mb-4">Klik tanggal mulai dan akhir penyewaan</p>
                     
-                    <div class="cal-header">
-                        <button type="button" class="cal-btn" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
+                    <div class="d-flex justify-content-between align-items-center mb-3 fw-semibold text-dark small">
+                        <button type="button" class="btn border-0 text-muted p-0" id="prevMonth"><i class="fas fa-chevron-left"></i></button>
                         <span id="monthYearDisplay">Januari 2026</span>
-                        <button type="button" class="cal-btn" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
+                        <button type="button" class="btn border-0 text-muted p-0" id="nextMonth"><i class="fas fa-chevron-right"></i></button>
                     </div>
+                    
                     <div class="cal-grid">
                         <div class="cal-day-name">Min</div><div class="cal-day-name">Sen</div><div class="cal-day-name">Sel</div>
                         <div class="cal-day-name">Rab</div><div class="cal-day-name">Kam</div><div class="cal-day-name">Jum</div><div class="cal-day-name">Sab</div>
                     </div>
-                    <div class="cal-grid" id="calendarDays"></div>
+                    <div class="cal-grid mb-3" id="calendarDays"></div>
 
-                    <div class="cal-legend">
-                        <div class="legend-item"><div class="legend-box cal-tersedia"></div> Tersedia</div>
-                        <div class="legend-item"><div class="legend-box cal-terbatas"></div> Terbatas</div>
-                        <div class="legend-item"><div class="legend-box cal-habis"></div> Tidak Tersedia</div>
-                        <div class="legend-item"><div class="legend-box cal-pilih"></div> Dipilih</div>
+                    <div class="d-flex flex-wrap justify-content-center gap-2 align-items-center" style="font-size: 0.75rem;">
+                        <div class="d-flex align-items-center gap-1"><div class="legend-box cal-tersedia"></div> Tersedia</div>
+                        <div class="d-flex align-items-center gap-1"><div class="legend-box cal-terbatas"></div> Terbatas</div>
+                        <div class="d-flex align-items-center gap-1"><div class="legend-box cal-habis"></div> Tidak Tersedia</div>
+                        <div class="d-flex align-items-center gap-1"><div class="legend-box cal-pilih"></div> Dipilih</div>
                     </div>
 
-                    <div class="selected-dates-text" id="selectedText">
+                    <div class="mt-4 p-3 rounded-3 text-center" style="background: var(--teal-light); color: var(--teal-dark); font-size: 0.85rem;" id="selectedText">
                         Pilih rentang tanggal di kalender.
                     </div>
                 </div>
 
                 <div class="right-card">
-                    <div class="card-title"><i class="fas fa-layer-group"></i> Jumlah Barang</div>
-                    <p class="card-subtitle">Sesuaikan jumlah yang ingin disewa</p>
+                    <div class="d-flex align-items-center gap-2 fs-5 fw-semibold text-dark mb-1"><i class="fas fa-layer-group"></i> Jumlah Barang</div>
+                    <p class="text-muted small mb-3">Sesuaikan jumlah yang ingin disewa</p>
                     
-                    <div class="qty-wrapper">
-                        <button type="button" class="qty-btn" id="btnMinus">-</button>
-                        <input type="number" id="inputQty" class="qty-input" value="1" min="1" max="<?= $inv['stok']; ?>" readonly>
-                        <button type="button" class="qty-btn" id="btnPlus">+</button>
+                    <div class="d-flex align-items-center justify-content-between border rounded-3 px-3 py-2">
+                        <button type="button" class="btn border-0 p-0 fs-5 text-dark" id="btnMinus">-</button>
+                        <input type="number" id="inputQty" class="qty-input bg-transparent border-0 text-center fw-semibold text-dark" style="width: 50px;" value="1" min="1" max="<?= $inv['stok']; ?>" readonly>
+                        <button type="button" class="btn border-0 p-0 fs-5 text-dark" id="btnPlus">+</button>
                     </div>
                     
-                    <div class="warning-text" id="warningText"><i class="fas fa-exclamation-circle"></i> Stok terbatas! Segera pesan sebelum kehabisan.</div>
+                    <div class="mt-2 text-start small d-none" style="color: #D97706;" id="warningText"><i class="fas fa-exclamation-circle"></i> Stok terbatas! Segera pesan sebelum kehabisan.</div>
                 </div>
 
                 <div class="right-card">
-                    <div class="price-main">Rp <?= number_format($inv['harga_sewa_per_hari'], 0, ',', '.'); ?> <span>/Hari</span></div>
-                    <p style="font-size: 0.8rem; color: var(--text-gray);">Harga belum termasuk biaya admin</p>
+                    <div class="fs-2 fw-bold text-dark lh-sm" style="font-family: 'Outfit'; mb-1">Rp <?= number_format($inv['harga_sewa_per_hari'], 0, ',', '.'); ?> <span class="fs-6 fw-normal text-muted">/Hari</span></div>
+                    <p class="text-muted small mb-4">Harga belum termasuk biaya admin</p>
 
-                    <div class="estimasi-box">
-                        <div class="est-row"><span>Durasi</span> <span id="dispDurasi">0 Hari</span></div>
-                        <div class="est-row"><span>Jumlah</span> <span id="dispJumlah">1 Unit</span></div>
-                        <div class="est-total"><span>Total Estimasi</span> <span id="total_tampil">Rp 0</span></div>
+                    <div class="border rounded-3 p-3 mb-4" style="background: var(--bg);">
+                        <div class="d-flex justify-content-between small text-muted mb-2"><span>Durasi</span> <span id="dispDurasi">0 Hari</span></div>
+                        <div class="d-flex justify-content-between small text-muted mb-3"><span>Jumlah</span> <span id="dispJumlah">1 Unit</span></div>
+                        <div class="d-flex justify-content-between pt-3 border-top fw-bold fs-5" style="color: var(--teal-dark);"><span>Total Estimasi</span> <span id="total_tampil">Rp 0</span></div>
                     </div>
 
-                    <ul class="checklist">
-                        <li><i class="far fa-check-circle" style="color: var(--teal-dark);"></i> Validasi KTM</li>
-                        <li><i class="far fa-clock" style="color: var(--teal-dark);"></i> Konfirmasi melalui WhatsApp</li>
-                        <li><i class="fas fa-map-marker-alt" style="color: var(--teal-dark);"></i> Lokasi: Sekretariat Ikhwan UKKI</li>
+                    <ul class="list-unstyled text-muted small d-flex flex-column gap-2 mb-4">
+                        <li class="d-flex align-items-center gap-2"><i class="far fa-check-circle" style="color: var(--teal-dark);"></i> Validasi KTM</li>
+                        <li class="d-flex align-items-center gap-2"><i class="far fa-clock" style="color: var(--teal-dark);"></i> Konfirmasi melalui WhatsApp</li>
+                        <li class="d-flex align-items-center gap-2"><i class="fas fa-map-marker-alt" style="color: var(--teal-dark);"></i> Lokasi: Sekretariat Ikhwan UKKI</li>
                     </ul>
 
                     <form action="form_peminjaman.php?id=<?= $id_inventaris; ?>" method="POST" id="bookingForm">
@@ -328,47 +275,53 @@ if (!empty($inv['spesifikasi']) && $inv['spesifikasi'] !== 'null') {
                         <input type="hidden" name="jumlah" id="formJumlah" value="1">
                         
                         <?php if($inv['stok'] > 0 && $inv['kondisi_barang'] != 'Rusak Berat'): ?>
-                            <button type="submit" name="booking" class="btn-submit" id="btnSubmit" disabled><i class="far fa-calendar-check"></i> Booking Sekarang</button>
+                            <button type="submit" name="booking" class="w-100 py-3 rounded-3 fw-semibold d-flex align-items-center justify-content-center gap-2 btn-submit" id="btnSubmit" disabled><i class="far fa-calendar-check"></i> Booking Sekarang</button>
                         <?php else: ?>
-                            <button type="button" class="btn-submit" disabled>Barang Tidak Tersedia</button>
+                            <button type="button" class="w-100 py-3 rounded-3 fw-semibold btn-submit" disabled>Barang Tidak Tersedia</button>
                         <?php endif; ?>
                     </form>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
-    <footer>
-        <div class="footer-grid">
-            <div class="footer-col">
-                <div class="footer-logo">UKKI Inventory</div>
-                <p style="margin-bottom: 1rem;">Sistem penyewaan inventaris organisasi mahasiswa yang aman, cepat, dan terpercaya.</p>
-                <p><i class="fas fa-map-marker-alt" style="width: 20px;"></i> Masjid Al Istiqomah UPN "Veteran" Jawa Timur</p>
-                <p><i class="fas fa-envelope" style="width: 20px;"></i> event.ukki@gmail.com</p>
-                <p><i class="fas fa-phone" style="width: 20px;"></i> +6289677778190</p>
-            </div>
-            <div class="footer-col">
-                <h4>Quick Links</h4>
-                <ul>
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="produk.php">Katalog</a></li>
-                </ul>
-            </div>
-            <div class="footer-col">
-                <h4>Social Media UKKI</h4>
-                <div class="social-icons">
-                    <a href="https://wa.me/6289677778190" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                    <a href="https://www.instagram.com/ukki_upn/" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="https://www.linkedin.com/company/ukkiupnvjt/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    <footer class="pt-5 pb-3 px-md-5 mt-auto" style="background: #0F172A;">
+        <div class="container-fluid" style="max-width: 1200px;">
+            <div class="row gx-4 gy-5 mb-4">
+                <div class="col-lg-5 pe-lg-5">
+                    <div class="d-flex align-items-center gap-2 mb-3 text-white fs-4 fw-bold" style="font-family: 'Outfit';">UKKI Inventory</div>
+                    <p class="mb-3 text-muted" style="color: #94A3B8 !important; font-size: 0.95rem;">Sistem penyewaan inventaris organisasi mahasiswa yang aman, cepat, dan terpercaya.</p>
+                    <ul class="d-flex flex-column gap-2 text-muted list-unstyled" style="color: #94A3B8 !important; font-size: 0.95rem;">
+                        <li><i class="fas fa-map-marker-alt" style="width: 25px;"></i> Masjid Al Istiqomah UPN "Veteran" Jawa Timur</li>
+                        <li><i class="fas fa-envelope" style="width: 25px;"></i> event.ukki@gmail.com</li>
+                        <li><i class="fas fa-phone" style="width: 25px;"></i> +6289677778190</li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="text-white fs-5 fw-bold mb-3">Quick Links</h4>
+                    <ul class="d-flex flex-column gap-2 list-unstyled" style="font-size: 0.95rem;">
+                        <li><a href="../index.php" class="text-decoration-none" style="color: #94A3B8;">Home</a></li>
+                        <li><a href="../produk.php" class="text-decoration-none" style="color: #94A3B8;">Katalog</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-6">
+                    <h4 class="text-white fs-5 fw-bold mb-3">Social Media UKKI</h4>
+                    <div class="d-flex gap-3 mt-1">
+                        <a href="https://wa.me/6289677778190" target="_blank" class="fs-5 text-decoration-none" style="color: #94A3B8;"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/ukki_upn/" target="_blank" class="fs-5 text-decoration-none" style="color: #94A3B8;"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.linkedin.com/company/ukkiupnvjt/" target="_blank" class="fs-5 text-decoration-none" style="color: #94A3B8;"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="w-100" style="height: 150px; border-radius: 8px; overflow: hidden; position: relative;">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.387140801831!2d112.78762741477488!3d-7.333100694708173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fab87f4c5111%3A0x6fbcebf5a32eb4a7!2sUPN%20%22Veteran%22%20Jawa%20Timur!5e0!3m2!1sen!2sid!4v1679412345678!5m2!1sen!2sid" allowfullscreen="" loading="lazy" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0;"></iframe>
+                    </div>
                 </div>
             </div>
-            <div class="footer-col">
-                <div class="map-box">
-                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3957.387140801831!2d112.78762741477488!3d-7.333100694708173!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd7fab87f4c5111%3A0x6fbcebf5a32eb4a7!2sUPN%20%22Veteran%22%20Jawa%20Timur!5e0!3m2!1sen!2sid!4v1679412345678!5m2!1sen!2sid" allowfullscreen="" loading="lazy"></iframe>
-                </div>
+            <div class="text-center pt-4 border-top mt-4" style="border-color: #1E293B !important; font-size: 0.9rem;">
+                <p class="mb-0" style="color: #94A3B8;">© 2026 UKKI UPN "Veteran" Jawa Timur. All rights reserved.</p>
             </div>
         </div>
-        <div class="footer-bottom"><p>© 2026 UKKI UPN "Veteran" Jawa Timur. All rights reserved.</p></div>
     </footer>
 
     <script>
@@ -414,9 +367,9 @@ if (!empty($inv['spesifikasi']) && $inv['spesifikasi'] !== 'null') {
                 }
             }
             if(isTerbatas) {
-                warningEl.classList.add('active');
+                warningEl.classList.remove('d-none');
             } else {
-                warningEl.classList.remove('active');
+                warningEl.classList.add('d-none');
             }
         }
 

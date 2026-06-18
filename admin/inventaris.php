@@ -116,6 +116,8 @@ foreach($inventaris as $inv) {
     <title>Kelola Inventaris</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="icon" type="image/png" href="../assets/img/logo-ukki.png">
     <style>
         :root { 
@@ -123,149 +125,99 @@ foreach($inventaris as $inv) {
             --white: #FFFFFF; --border: #E2E8F0; --sidebar-bg: #155050;
             --sidebar-active-text: #155050; --sidebar-idle-text: #94A3B8;
         }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background: var(--bg); color: var(--text); overflow-x: hidden; }
-        a { text-decoration: none; color: inherit; }
+        body { background: var(--bg); color: var(--text); overflow-x: hidden; font-family: 'Outfit', sans-serif;}
+        .text-poppins { font-family: 'Poppins', sans-serif; }
         
-        .sidebar { background: var(--sidebar-bg); width: 260px; height: 100vh; position: fixed; padding: 1.5rem 0 0 0; top: 0; left: 0; z-index: 1000; transition: transform 0.3s ease; display: flex; flex-direction: column; }
-        .brand { padding: 0 1.5rem 2rem; display: flex; align-items: center; gap: 12px; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        /* SIDEBAR */
+        .sidebar { background: var(--sidebar-bg); width: 260px; height: 100vh; position: fixed; padding: 1.5rem 0 0 0; top: 0; left: 0; z-index: 1000; transition: transform 0.3s ease;}
         .brand-icon { width: 40px; height: 40px; background: rgba(255,255,255,0.1); color: var(--white); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .brand-text h2 { font-family: 'Outfit', sans-serif; font-size: 1.1rem; line-height: 1.2; color: var(--white); font-weight: 500;}
-        .brand-text p { font-size: 0.75rem; color: rgba(255,255,255,0.7); }
-        .menu-label { padding: 0 2rem; font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 1.5rem; margin-bottom: 0.5rem; letter-spacing: 1px; }
-        .nav-menu { list-style: none; display: flex; flex-direction: column; flex-grow: 1; margin-bottom: 1.5rem;}
-        .nav-menu li { width: 100%; }
-        .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 0.8rem 1.2rem; color: rgba(255,255,255,0.7); font-size: 0.95rem; font-weight: 400; transition: 0.3s; margin: 0 0.8rem; border-radius: 8px; font-style: normal; }
+        .nav-menu a { display: flex; align-items: center; gap: 12px; padding: 0.8rem 1.2rem; color: rgba(255,255,255,0.7); font-size: 0.95rem; font-weight: 400; transition: 0.3s; margin: 0 0.8rem; border-radius: 8px; text-decoration: none;}
         .nav-menu a:hover { background: rgba(255,255,255,0.1); color: var(--white);}
         .nav-menu a.active { color: var(--sidebar-active-text); background: var(--white); font-weight: 500; }
-        .nav-menu i { font-size: 1.1rem; width: 24px; text-align: center; font-style: normal;}
+        .nav-menu i { font-size: 1.1rem; width: 24px; text-align: center;}
+        .logout-item a:hover { background: rgba(239, 68, 68, 0.1); color: #FCA5A5; }
         
-        .logout-item { margin-top: auto; }
-        .logout-item a { transition: all 0.2s ease; }
-        .logout-item a:hover { background: #DC2626; color: #FFFFFF !important; }
-        .logout-item a:hover i { color: #FFFFFF !important; }
-        
+        /* MAIN LAYOUT */
         .main-content { margin-left: 260px; padding: 1.5rem 2.5rem; transition: margin-left 0.3s ease; }
-        .mobile-header { display: none; justify-content: space-between; align-items: center; background: var(--white); padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); margin: -1.5rem -1.5rem 1.5rem -1.5rem; }
-        .mobile-toggle { background: none; border: none; font-size: 1.5rem; color: var(--text); cursor: pointer; }
-        
-        .top-navbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; }
-        .top-nav-titles h1 { font-family: 'Outfit', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--text);}
-        .top-nav-titles p { font-size: 0.9rem; color: var(--text); margin-top: 0.2rem;}
-        .user-profile { display: flex; align-items: center; gap: 12px; }
-        .user-text { text-align: right; }
         .avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--sidebar-bg); color: white; display: flex; align-items: center; justify-content: center; font-weight: 500; font-family: 'Outfit'; font-size: 1.1rem;}
         
-        .toolbar-container { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;}
-        .search-form { display: flex; gap: 1rem; align-items: center; width: 50%; max-width: 450px;} 
+        /* TOOLBAR & SEARCH */
         .search-box { position: relative; flex-grow: 1; }
         .search-box i.fa-search { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 0.9rem;}
         .btn-clear { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--muted); cursor: pointer; font-size: 1rem; display: none;}
         .btn-clear:hover { color: var(--text); }
-        .search-input { width: 100%; padding: 0.75rem 2.5rem 0.75rem 2.5rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; color: var(--text); font-family: 'Poppins', sans-serif; outline: none; background: #F8FAFC; transition: 0.2s;}
-        .search-input:focus { border-color: #1B6060; background: var(--white); }
-        .btn-search { background: #1B6060; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
+        .search-input { width: 100%; padding: 0.75rem 2.5rem 0.75rem 2.5rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; color: var(--text); font-family: 'Poppins', sans-serif; outline: none; background: var(--white); transition: 0.2s;}
+        .search-input:focus { border-color: #1B6060; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
+        .btn-search { background: #1B6060; color: white; border: none; padding: 0 1.2rem; border-radius: 8px; font-weight: 500; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: 0.2s;}
         .btn-search:hover { background: #124040; }
-        
         .btn-add { background: #1B6060; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 500; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.2s; white-space: nowrap;}
         .btn-add:hover { background: #124040; }
 
-        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 1.5rem; }
-        .stat-card { background: var(--white); padding: 1.2rem 1.5rem; border-radius: 12px; border: 1px solid var(--border); }
-        .stat-card p { font-size: 0.85rem; font-weight: 500; margin-bottom: 0.5rem;}
-        .stat-card h3 { font-family: 'Outfit', sans-serif; font-size: 1.8rem; }
-        
-        .c-blue p { color: #2563EB; } .c-blue h3 { color: #1E3A8A; }
-        .c-green { background: #F0FDF4; border-color: #DCFCE7;} .c-green p { color: #16A34A; } .c-green h3 { color: #14532D; }
-        .c-yellow { background: #FEFCE8; border-color: #FEF08A;} .c-yellow p { color: #D97706; } .c-yellow h3 { color: #78350F; }
-        .c-purple p { color: #9333EA; } .c-purple h3 { color: #581C87; }
+        /* STATS (Identical Kalibrasi) */
+        .stat-card { background: var(--white); border-radius: 12px; border: 1px solid var(--border); padding: 1.5rem; }
+        .c-blue p { color: #2563EB; font-weight: 500; font-size: 0.85rem;} .c-blue h3 { color: #1E3A8A; font-size: 2rem;}
+        .c-green { background: #F0FDF4; border-color: #DCFCE7;} .c-green p { color: #16A34A; font-weight: 500; font-size: 0.85rem;} .c-green h3 { color: #14532D; font-size: 2rem;}
+        .c-yellow { background: #FEFCE8; border-color: #FEF08A;} .c-yellow p { color: #D97706; font-weight: 500; font-size: 0.85rem;} .c-yellow h3 { color: #78350F; font-size: 2rem;}
+        .c-purple p { color: #9333EA; font-weight: 500; font-size: 0.85rem;} .c-purple h3 { color: #581C87; font-size: 2rem;}
 
-        .table-container { background: var(--white); border-radius: 12px; border: 1px solid var(--border); overflow-x: auto; padding: 1.5rem;}
-        table { width: 100%; border-collapse: collapse; min-width: 900px;}
-        th { font-size: 0.75rem; color: var(--muted); font-weight: 600; text-transform: uppercase; padding: 1rem 0.5rem; border-bottom: 1px solid var(--border); text-align: left; letter-spacing: 0.5px;}
-        td { padding: 1.2rem 0.5rem; border-bottom: 1px solid #F1F5F9; vertical-align: middle; color: var(--text); font-size: 0.85rem;}
+        /* TABLE */
+        .table-container { background: var(--white); border-radius: 12px; border: 1px solid var(--border); overflow-x: auto;}
+        .table th { border-bottom: 1px solid var(--border) !important;}
+        .table td { border-bottom: 1px solid #F1F5F9; vertical-align: middle;}
         
-        .td-kode { font-weight: 600; font-family: 'Outfit', sans-serif;}
-        .td-nama { font-weight: 500; color: var(--text); }
-        .td-lokasi { font-size: 0.75rem; color: var(--muted); font-weight: 400; display: block; margin-top: 0.2rem;}
+        .badge-cat { background: #E0F2FE; color: #0284C7; padding: 6px 14px; border-radius: 50px; font-size: 0.8rem; font-weight: 500; display: inline-block;}
+        .badge-cond-baik { color: #16A34A; font-weight: 600; font-size: 0.85rem;}
+        .badge-cond-ringan { color: #D97706; font-weight: 600; font-size: 0.85rem;}
+        .badge-cond-berat { color: #DC2626; font-weight: 600; font-size: 0.85rem;}
         
-        .badge-cat { background: #E0F2FE; color: #0284C7; padding: 4px 10px; border-radius: 50px; font-size: 0.75rem; font-weight: 500;}
-        .badge-cond-baik { color: #16A34A; font-weight: 500;}
-        .badge-cond-ringan { background: #FEF3C7; color: #D97706; padding: 4px 10px; border-radius: 50px; font-weight: 500; font-size: 0.75rem;}
-        .badge-cond-berat { background: #DC2626; color: white; padding: 4px 10px; border-radius: 50px; font-weight: 500; font-size: 0.75rem;}
-        
-        .td-status { color: #16A34A; font-weight: 500; }
-        .td-stok { font-weight: 600; font-size: 0.95rem; }
-        
-        .td-sewa { text-align: center;}
-        .sewa-harga { background: #F1F5F9; color: #475569; padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; font-weight: 600; display: inline-block;}
+        .sewa-harga { background: #F1F5F9; color: #475569; padding: 6px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; display: inline-block;}
 
-        .btn-action { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; transition: 0.2s; padding: 0.3rem;}
+        .btn-action { background: none; border: none; color: var(--muted); font-size: 1rem; cursor: pointer; transition: 0.2s; padding: 0.4rem; display: inline-flex; align-items: center; justify-content: center;}
         .btn-action:hover { color: var(--primary); }
         .btn-action.del:hover { color: #DC2626; }
 
+        /* MODAL */
         .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(15, 23, 42, 0.7); z-index: 2000; align-items: center; justify-content: center;}
-        .modal-box { background: var(--white); width: 95%; max-width: 900px; border-radius: 16px; padding: 2rem; position: relative; max-height: 90vh; overflow-y: auto;}
-        .modal-header { margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid #F1F5F9; display: flex; justify-content: space-between; align-items: center;}
-        .modal-header h3 { font-family: 'Outfit', sans-serif; font-size: 1.4rem; color: var(--text); font-weight: 600;}
-        .modal-close { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); transition: 0.2s;}
+        .modal-box { background: var(--white); width: 95%; max-width: 900px; border-radius: 16px; position: relative; max-height: 90vh; overflow-y: auto;}
+        .modal-close { position: absolute; top: 1.5rem; right: 1.5rem; background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--muted); transition: 0.2s;}
         .modal-close:hover { color: var(--text); }
         
-        .form-section { margin-bottom: 2rem;}
-        .form-section-title { font-size: 1rem; font-weight: 600; color: var(--text); margin-bottom: 1rem; font-family: 'Outfit', sans-serif;}
-        
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-        .form-group { margin-bottom: 1rem; }
-        .form-group.full { grid-column: 1 / -1; }
-        .form-group label { display: block; font-size: 0.8rem; color: var(--text); margin-bottom: 0.5rem; font-weight: 500;}
-        .form-control { width: 100%; padding: 0.75rem 1rem; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; font-family: 'Poppins', sans-serif; background: #FAFAFA; transition: 0.2s;}
-        .form-control:focus { outline: none; border-color: #1B6060; background: var(--white); }
-        .form-control[readonly] { background: #F1F5F9; cursor: not-allowed; color: var(--muted);}
-        textarea.form-control { resize: vertical; min-height: 80px; }
+        .form-control-custom { font-family: 'Poppins', sans-serif; border: 1px solid var(--border); border-radius: 8px; font-size: 0.9rem; background: #FAFAFA; transition: 0.2s; padding: 0.75rem 1rem; width: 100%;}
+        .form-control-custom:focus { outline: none; border-color: #1B6060; background: var(--white); }
+        .form-control-custom[readonly] { background: #F1F5F9; cursor: not-allowed; color: var(--muted);}
+        textarea.form-control-custom { resize: vertical; min-height: 80px; }
         
         .file-upload-box { border: 2px dashed var(--border); border-radius: 8px; padding: 2rem; text-align: center; background: #FAFAFA; cursor: pointer; transition: 0.2s;}
         .file-upload-box:hover { border-color: var(--primary); background: #F0FDF4; }
-        .file-upload-box i { font-size: 2rem; color: var(--muted); margin-bottom: 0.5rem;}
-        .file-upload-box p { font-size: 0.85rem; color: var(--muted);}
         
-        .spec-item { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;}
         .btn-add-spec { background: none; border: none; color: var(--primary); font-weight: 500; font-size: 0.85rem; cursor: pointer; display: flex; align-items: center; gap: 5px; margin-top: 0.5rem; transition: 0.2s;}
         .btn-add-spec:hover { color: #1B6060; text-decoration: underline;}
         
-        .modal-footer { display: flex; justify-content: flex-end; gap: 1rem; border-top: 1px solid var(--border); padding-top: 1.5rem;}
-        .btn-cancel { padding: 0.75rem 1.5rem; border-radius: 8px; border: 1px solid var(--border); background: var(--white); color: var(--text); font-weight: 500; cursor: pointer; transition: 0.2s;}
+        .btn-cancel { padding: 0.75rem 1.5rem; border-radius: 8px; border: 1px solid var(--border); background: var(--white); color: var(--text); font-weight: 500; cursor: pointer; transition: 0.2s; font-family: 'Outfit', sans-serif;}
         .btn-cancel:hover { background: #F1F5F9; }
-        .btn-submit { padding: 0.75rem 2rem; border-radius: 8px; border: none; background: #1B6060; color: var(--white); font-weight: 500; cursor: pointer; transition: 0.2s;}
+        .btn-submit { padding: 0.75rem 2rem; border-radius: 8px; border: none; background: #1B6060; color: var(--white); font-weight: 500; cursor: pointer; transition: 0.2s; font-family: 'Outfit', sans-serif;}
         .btn-submit:hover { background: #0F172A; }
         
-        .empty-state { text-align: center; padding: 3rem 1rem; color: var(--muted); }
-        
-        .toast { position: fixed; top: 20px; right: 20px; background: var(--white); border-left: 4px solid var(--primary); padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px; z-index: 9999; transform: translateX(120%); transition: transform 0.3s ease; }
-        .toast.show { transform: translateX(0); }
-        .toast.error { border-left-color: #DC2626; }
-        .toast i.success { color: var(--primary); font-size: 1.2rem;}
-        .toast i.error { color: #DC2626; font-size: 1.2rem;}
+        /* TOAST */
+        .toast-box { position: fixed; top: 20px; right: 20px; background: var(--white); border-left: 4px solid var(--primary); padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 12px; z-index: 9999; transform: translateX(120%); transition: transform 0.3s ease; font-family: 'Poppins', sans-serif;}
+        .toast-box.show { transform: translateX(0); }
+        .toast-box.error { border-left-color: #DC2626; }
+        .toast-box i.success { color: var(--primary); font-size: 1.2rem;}
+        .toast-box i.error { color: #DC2626; font-size: 1.2rem;}
 
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); }
             .sidebar.active { transform: translateX(0); }
             .main-content { margin-left: 0; padding: 1.5rem; }
-            .mobile-header { display: flex; }
-            .top-navbar { display: none; }
-            .toolbar-container { flex-direction: column; align-items: stretch; }
-            .search-form { flex-direction: column; width: 100%; max-width: none;}
-            .btn-add { padding: 0.8rem; justify-content: center; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .form-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
 
     <?php if(isset($_SESSION['toast_msg'])): ?>
-    <div class="toast <?= $_SESSION['toast_type'] ?>" id="toastBox">
+    <div class="toast-box <?= $_SESSION['toast_type'] ?>" id="toastBox">
         <i class="fas <?= $_SESSION['toast_type'] == 'success' ? 'fa-check-circle success' : 'fa-exclamation-circle error' ?>"></i>
-        <div class="toast-msg"><?= $_SESSION['toast_msg'] ?></div>
+        <div class="toast-msg" style="font-size: 0.95rem;"><?= $_SESSION['toast_msg'] ?></div>
     </div>
     <script>
         setTimeout(() => { document.getElementById('toastBox').classList.add('show'); }, 100);
@@ -275,160 +227,173 @@ foreach($inventaris as $inv) {
 
     <div class="overlay" id="sidebarOverlay" style="z-index: 999;" onclick="toggleMenu()"></div>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="brand">
-            <div class="brand-text"><h2>Inventory</h2><p>UKKI UPN "Veteran" Jatim</p></div>
+    <aside class="sidebar d-flex flex-column" id="sidebar">
+        <div class="d-flex align-items-center gap-2 pb-4 mb-4 px-4 border-bottom" style="border-color: rgba(255,255,255,0.05) !important;">
+            <div class="text-white">
+                <h2 class="fs-5 mb-0 fw-medium">Inventory</h2>
+                <p class="mb-0" style="font-size: 0.75rem; color: rgba(255,255,255,0.7);">UKKI UPN "Veteran" Jatim</p>
+            </div>
         </div>
-        <p class="menu-label">MENU</p>
-        <ul class="nav-menu">
+        <p class="px-4 mb-2" style="font-size: 0.7rem; color: rgba(255,255,255,0.5); letter-spacing: 1px;">MENU</p>
+        <ul class="nav-menu d-flex flex-column flex-grow-1 p-0 m-0 mb-4">
             <li><a href="index.php"><i class="fas fa-chart-pie"></i> Dashboard</a></li>
             <li><a href="inventaris.php" class="active"><i class="fas fa-cube"></i> Inventaris</a></li>
             <li><a href="penyewaan.php"><i class="fas fa-file-alt"></i> Transaksi</a></li>
-            <li class="logout-item"><a href="../auth/logout.php"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            <li class="logout-item mt-auto"><a href="../auth/logout.php" style="color:#FCA5A5;"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
         </ul>
     </aside>
 
     <main class="main-content">
-        <div class="mobile-header">
-            <div class="user-profile" style="background: none; border: none; padding: 0;">
-                <div class="avatar"><?= substr($_SESSION['user_nama'], 0, 1) ?></div>
-            </div>
-            <button class="mobile-toggle" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
+        <div class="d-flex d-md-none justify-content-between align-items-center bg-white p-3 border-bottom mx-n3 mt-n3 mb-4">
+            <div class="avatar"><?= substr($_SESSION['user_nama'], 0, 1) ?></div>
+            <button class="btn border-0 text-dark fs-4 p-0" onclick="toggleMenu()"><i class="fas fa-bars"></i></button>
         </div>
 
-        <div class="top-navbar">
-            <div class="top-nav-titles">
-                <h1>Dashboard Inventaris UKKI</h1>
-                <p>Manajemen data inventaris UKKI</p>
+        <div class="d-none d-md-flex justify-content-between align-items-center mb-5">
+            <div>
+                <h1 class="fs-4 fw-bold text-dark mb-1">Dashboard Inventaris UKKI</h1>
+                <p class="small text-muted mb-0 text-poppins">Manajemen data inventaris UKKI</p>
             </div>
-            <div class="user-profile">
-                <div class="user-text">
-                    <h4 style="font-size:0.9rem; color:var(--text); font-weight: 500;"><?= htmlspecialchars($_SESSION['user_nama']) ?></h4>
-                    <p style="font-size:0.75rem; color:var(--muted);">Administrator</p>
+            <div class="d-flex align-items-center gap-3 bg-white px-3 py-2 rounded-pill border">
+                <div class="text-end">
+                    <h4 class="fs-6 mb-0 text-dark fw-medium text-poppins"><?= htmlspecialchars($_SESSION['user_nama']) ?></h4>
+                    <p class="mb-0" style="font-size: 0.75rem; color: var(--muted); font-family: 'Poppins', sans-serif;">Administrator</p>
                 </div>
                 <div class="avatar"><?= substr($_SESSION['user_nama'], 0, 1) ?></div>
             </div>
         </div>
 
-        <div class="toolbar-container">
-            <form method="GET" action="" class="search-form">
+        <div class="bg-white border rounded-3 p-3 p-md-4 mb-4 d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+            <form method="GET" action="" class="d-flex gap-2 w-100" style="max-width: 450px;">
                 <div class="search-box">
                     <i class="fas fa-search"></i>
                     <input type="text" name="q" id="searchInput" class="search-input" placeholder="Cari berdasarkan nama atau kode..." value="<?= htmlspecialchars($search) ?>" oninput="toggleClearBtn()">
                     <button type="button" class="btn-clear" id="clearBtn" onclick="clearSearch()"><i class="fas fa-times" style="position:static; transform:none;"></i></button>
                 </div>
-                <button type="submit" class="btn-search"><i class="fas fa-search"></i></button>
+                <button type="submit" class="btn-search text-poppins px-3"><i class="fas fa-search"></i></button>
             </form>
-            <button type="button" class="btn-add" onclick="openModal('add')"><i class="fas fa-plus"></i> Tambah Barang</button>
+            <button type="button" class="btn-add w-10 w-md-auto text-poppins" onclick="openModal('add')"><i class="fas fa-plus"></i> Tambah Barang</button>
         </div>
 
-        <div class="stats-grid">
-            <div class="stat-card c-blue">
-                <p>Total Barang</p>
-                <h3><?= $stat_total ?></h3>
+        <div class="row g-4 mb-4">
+            <div class="col-sm-6 col-lg-3">
+                <div class="stat-card c-blue">
+                    <p class="text-poppins mb-1">Total Barang</p>
+                    <h3 class="mb-0 fw-bold"><?= $stat_total ?></h3>
+                </div>
             </div>
-            <div class="stat-card c-green">
-                <p>Tersedia</p>
-                <h3><?= $stat_tersedia ?></h3>
+            <div class="col-sm-6 col-lg-3">
+                <div class="stat-card c-green">
+                    <p class="text-poppins mb-1">Tersedia</p>
+                    <h3 class="mb-0 fw-bold"><?= $stat_tersedia ?></h3>
+                </div>
             </div>
-            <div class="stat-card c-yellow">
-                <p>Perlu Perbaikan</p>
-                <h3><?= $stat_perbaikan ?></h3>
+            <div class="col-sm-6 col-lg-3">
+                <div class="stat-card c-yellow">
+                    <p class="text-poppins mb-1">Perlu Perbaikan</p>
+                    <h3 class="mb-0 fw-bold"><?= $stat_perbaikan ?></h3>
+                </div>
             </div>
-            <div class="stat-card c-purple">
-                <p>Total Stok</p>
-                <h3><?= $stat_stok ?></h3>
+            <div class="col-sm-6 col-lg-3">
+                <div class="stat-card c-purple">
+                    <p class="text-poppins mb-1">Total Stok</p>
+                    <h3 class="mb-0 fw-bold"><?= $stat_stok ?></h3>
+                </div>
             </div>
         </div>
 
-        <div class="table-container">
+        <div class="table-container p-4 text-poppins">
             <?php if (empty($inventaris)): ?>
-                <div class="empty-state">Belum ada data barang atau hasil pencarian tidak ditemukan.</div>
+                <div class="text-center py-5 text-muted">Belum ada data barang atau hasil pencarian tidak ditemukan.</div>
             <?php else: ?>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Kode</th>
-                        <th>Nama Barang</th>
-                        <th>Kategori</th>
-                        <th>Kondisi</th>
-                        <th>Status</th>
-                        <th style="text-align:center;">Stok</th>
-                        <th style="text-align:center;">Harga Sewa</th>
-                        <th style="text-align:center;">Aksi</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach($inventaris as $inv): 
-                        $kode = "INV" . str_pad($inv['id_inventaris'], 3, '0', STR_PAD_LEFT);
-                    ?>
-                    <tr>
-                        <td class="td-kode"><?= $kode ?></td>
-                        <td>
-                            <span class="td-nama"><?= htmlspecialchars($inv['nama_barang']) ?></span>
-                            <span class="td-lokasi">Lokasi: <?= htmlspecialchars($inv['lokasi'] ?? '-') ?></span>
-                        </td>
-                        <td><span class="badge-cat"><?= htmlspecialchars($map_kategori[$inv['id_kategori']] ?? 'Tidak ada') ?></span></td>
-                        <td>
-                            <?php 
-                                if($inv['kondisi_barang'] == 'Baik') echo '<span class="badge-cond-baik">Baik</span>';
-                                elseif($inv['kondisi_barang'] == 'Rusak Ringan') echo '<span class="badge-cond-ringan">Rusak Ringan</span>';
-                                else echo '<span class="badge-cond-berat">Rusak Berat</span>';
-                            ?>
-                        </td>
-                        <td><span class="td-status"><?= htmlspecialchars($inv['status_barang'] ?? 'Tersedia') ?></span></td>
-                        <td class="td-stok" style="text-align:center;"><?= $inv['stok'] ?></td>
-                        <td class="td-sewa">
-                            <span class="sewa-harga">Rp <?= number_format($inv['harga_sewa_per_hari'],0,',','.') ?>/hari</span>
-                        </td>
-                        <td style="text-align:center;">
-                            <button class="btn-action" onclick='openEdit(<?= json_encode($inv) ?>)'><i class="far fa-edit"></i></button>
-                            <form method="POST" style="display:inline;" onsubmit="return confirm('Apakah anda ingin menghapus barang ini?');">
-                                <input type="hidden" name="id_inventaris" value="<?= $inv['id_inventaris'] ?>">
-                                <button type="submit" name="hapus_barang" class="btn-action del"><i class="far fa-trash-alt"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
+            <div class="table-responsive">
+                <table class="table table-borderless align-middle mb-0" style="min-width: 900px;">
+                    <thead>
+                        <tr>
+                            <th class="small fw-semibold text-uppercase text-muted pb-3" style="letter-spacing: 0.5px;">Kode</th>
+                            <th class="small fw-semibold text-uppercase text-muted pb-3" style="letter-spacing: 0.5px;">Nama Barang</th>
+                            <th class="small fw-semibold text-uppercase text-muted pb-3" style="letter-spacing: 0.5px;">Kategori</th>
+                            <th class="small fw-semibold text-uppercase text-muted pb-3" style="letter-spacing: 0.5px;">Kondisi</th>
+                            <th class="small fw-semibold text-uppercase text-muted pb-3" style="letter-spacing: 0.5px;">Status</th>
+                            <th class="small fw-semibold text-uppercase text-muted text-center pb-3" style="letter-spacing: 0.5px;">Stok</th>
+                            <th class="small fw-semibold text-uppercase text-muted pb-3" style="letter-spacing: 0.5px;">Harga Sewa</th>
+                            <th class="small fw-semibold text-uppercase text-muted text-center pb-3" style="letter-spacing: 0.5px;">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($inventaris as $inv): 
+                            $kode = "INV" . str_pad($inv['id_inventaris'], 3, '0', STR_PAD_LEFT);
+                        ?>
+                        <tr>
+                            <td class="fw-bold text-dark" style="font-family: 'Outfit', sans-serif; font-size: 0.95rem;"><?= $kode ?></td>
+                            <td class="py-3">
+                                <span class="fw-semibold text-dark d-block" style="font-size: 0.95rem;"><?= htmlspecialchars($inv['nama_barang']) ?></span>
+                                <span class="small text-muted d-block mt-1">Lokasi: <?= htmlspecialchars($inv['lokasi'] ?? '-') ?></span>
+                            </td>
+                            <td><span class="badge-cat"><?= htmlspecialchars($map_kategori[$inv['id_kategori']] ?? 'Tidak ada') ?></span></td>
+                            <td>
+                                <?php 
+                                    if($inv['kondisi_barang'] == 'Baik') echo '<span class="badge-cond-baik">Baik</span>';
+                                    elseif($inv['kondisi_barang'] == 'Rusak Ringan') echo '<span class="badge-cond-ringan">Rusak Ringan</span>';
+                                    else echo '<span class="badge-cond-berat">Rusak Berat</span>';
+                                ?>
+                            </td>
+                            <td><span class="fw-semibold text-success" style="font-size: 0.9rem;"><?= htmlspecialchars($inv['status_barang'] ?? 'Tersedia') ?></span></td>
+                            <td class="fw-bold text-center fs-5 text-dark" style="font-family: 'Outfit', sans-serif;"><?= $inv['stok'] ?></td>
+                            <td>
+                                <span class="sewa-harga text-poppins">Rp <?= number_format($inv['harga_sewa_per_hari'],0,',','.') ?>/hari</span>
+                            </td>
+                            <td class="text-center">
+                                <div class="d-flex align-items-center justify-content-center gap-1">
+                                    <button class="btn-action" onclick='openEdit(<?= json_encode($inv) ?>)'><i class="far fa-edit"></i></button>
+                                    <form method="POST" class="d-inline m-0" onsubmit="return confirm('Apakah anda ingin menghapus barang ini?');">
+                                        <input type="hidden" name="id_inventaris" value="<?= $inv['id_inventaris'] ?>">
+                                        <button type="submit" name="hapus_barang" class="btn-action del"><i class="far fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <?php endif; ?>
         </div>
     </main>
 
     <div class="modal-overlay" id="modalForm">
-        <div class="modal-box">
-            <div class="modal-header">
-                <h3 id="modalTitle">Tambah Barang</h3>
-                <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+        <div class="modal-box p-4 p-md-5">
+            <button class="modal-close" onclick="closeModal()"><i class="fas fa-times"></i></button>
+            <div class="border-bottom pb-3 mb-4">
+                <h3 class="fs-4 fw-bold text-dark mb-0" id="modalTitle" style="font-family: 'Outfit', sans-serif;">Tambah Barang</h3>
             </div>
             
-            <form method="POST" action="" id="inventarisForm" enctype="multipart/form-data">
+            <form method="POST" action="" id="inventarisForm" enctype="multipart/form-data" class="text-poppins">
                 <input type="hidden" name="id_inventaris" id="form_id" value="">
                 <input type="hidden" name="gambar_lama" id="form_gambar_lama" value="">
 
-                <div class="form-section">
-                    <h4 class="form-section-title">Data Dasar</h4>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Kode Barang *</label>
-                            <input type="text" class="form-control" id="form_kode" readonly placeholder="(Otomatis)">
+                <div class="mb-5">
+                    <h4 class="fs-6 fw-bold text-dark mb-3" style="font-family: 'Outfit', sans-serif;">Data Dasar</h4>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Kode Barang *</label>
+                            <input type="text" class="form-control form-control-custom" id="form_kode" readonly placeholder="(Otomatis)">
                         </div>
-                        <div class="form-group">
-                            <label>Nama Barang *</label>
-                            <input type="text" name="nama_barang" class="form-control" id="form_nama" required>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Nama Barang *</label>
+                            <input type="text" name="nama_barang" class="form-control form-control-custom" id="form_nama" required>
                         </div>
-                        <div class="form-group">
-                            <label>Kategori *</label>
-                            <select name="id_kategori" class="form-control" id="form_kategori" required>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Kategori *</label>
+                            <select name="id_kategori" class="form-select form-control-custom" id="form_kategori" required>
                                 <?php foreach($kategori_data as $kat): ?>
                                     <option value="<?= $kat['id_kategori'] ?>"><?= htmlspecialchars($kat['nama_kategori']) ?></option>
                                 <?php endforeach; ?>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Kondisi *</label>
-                            <select name="kondisi_barang" class="form-control" id="form_kondisi" required>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Kondisi *</label>
+                            <select name="kondisi_barang" class="form-select form-control-custom" id="form_kondisi" required>
                                 <option value="Baik">Baik</option>
                                 <option value="Rusak Ringan">Rusak Ringan</option>
                                 <option value="Rusak Berat">Rusak Berat</option>
@@ -437,62 +402,58 @@ foreach($inventaris as $inv) {
                     </div>
                 </div>
 
-                <div class="form-section">
-                    <h4 class="form-section-title">Lokasi & Stok</h4>
-                    <div class="form-grid">
-                        <div class="form-group">
-                            <label>Lokasi Penyimpanan *</label>
-                            <input type="text" name="lokasi" class="form-control" id="form_lokasi" required>
+                <div class="mb-4">
+                    <h4 class="fs-6 fw-bold text-dark mb-3" style="font-family: 'Outfit', sans-serif;">Lokasi & Stok</h4>
+                    <div class="row g-3">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Lokasi Penyimpanan *</label>
+                            <input type="text" name="lokasi" class="form-control form-control-custom" id="form_lokasi" required>
                         </div>
-                        <div class="form-group">
-                            <label>Jumlah/Stok *</label>
-                            <input type="number" name="stok" class="form-control" id="form_stok" min="0" required>
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Jumlah/Stok *</label>
+                            <input type="number" name="stok" class="form-control form-control-custom" id="form_stok" min="0" required>
                         </div>
-                        <div class="form-group">
-                            <label>Status Barang *</label>
-                            <select name="status_barang" class="form-control" id="form_status">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Status Barang *</label>
+                            <select name="status_barang" class="form-select form-control-custom" id="form_status">
                                 <option value="Tersedia">Tersedia</option>
                                 <option value="Tidak Tersedia">Tidak Tersedia</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label>Harga Sewa (per hari)</label>
-                            <input type="number" name="harga_sewa" class="form-control" id="form_harga" min="0" value="0">
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Harga Sewa (per hari)</label>
+                            <input type="number" name="harga_sewa" class="form-control form-control-custom" id="form_harga" min="0" value="0">
                         </div>
                             
-                        <div class="form-group">
-                            <label>Foto Barang (Max 5MB)</label>
-                            
-                            <div class="file-upload-box" onclick="document.getElementById('fileInput').click()" style="padding: 1rem; position: relative; min-height: 150px; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                                
+                        <div class="col-sm-6">
+                            <label class="form-label small fw-medium text-dark mb-1">Foto Barang (Max 5MB)</label>
+                            <div class="file-upload-box d-flex flex-column justify-content-center align-items-center" onclick="document.getElementById('fileInput').click()" style="min-height: 150px;">
                                 <div id="uploadPrompt">
-                                    <i class="fas fa-cloud-upload-alt" style="font-size: 2.5rem; color: var(--muted); margin-bottom: 0.5rem;"></i>
-                                    <p style="font-size: 0.85rem; color: var(--muted);">Klik untuk upload gambar (JPG/PNG)</p>
+                                    <i class="fas fa-cloud-upload-alt fs-1 text-muted mb-2"></i>
+                                    <p class="small text-muted mb-0">Klik untuk upload gambar (JPG/PNG)</p>
                                 </div>
-                                
-                                <img id="imagePreview" src="" alt="Preview" style="display: none; max-width: 100%; max-height: 160px; border-radius: 6px; object-fit: contain;">
+                                <img id="imagePreview" src="" alt="Preview" class="rounded object-fit-contain w-100" style="display: none; max-height: 160px;">
                             </div>
-                            
-                            <input type="file" name="foto" id="fileInput" accept="image/png, image/jpeg, image/jpg" style="display:none;">
-                            <p id="fileNameDisplay" style="font-size:0.75rem; color:var(--primary); margin-top:0.5rem; text-align:center;"></p>
+                            <input type="file" name="foto" id="fileInput" accept="image/png, image/jpeg, image/jpg" class="d-none">
+                            <p id="fileNameDisplay" class="small text-center mt-2 mb-0" style="color: var(--primary);"></p>
                         </div>
-                        <div class="form-group full">
-                            <label>Deskripsi Barang</label>
-                            <textarea name="deskripsi" class="form-control" id="form_deskripsi" placeholder="Tuliskan deskripsi umum barang..."></textarea>
+                        
+                        <div class="col-sm-6 d-flex flex-column">
+                            <label class="form-label small fw-medium text-dark mb-1">Deskripsi Barang</label>
+                            <textarea name="deskripsi" class="form-control form-control-custom flex-grow-1" id="form_deskripsi" placeholder="Tuliskan deskripsi umum barang..."></textarea>
                         </div>
 
-                        <div class="form-group full">
-                            <label>Spesifikasi Barang</label>
-                            <div id="specContainer">
-                                </div>
-                            <button type="button" class="btn-add-spec" onclick="addSpec('', true)"><i class="fas fa-plus"></i> Tambah Spesifikasi</button>
+                        <div class="col-12">
+                            <label class="form-label small fw-medium text-dark mb-1">Spesifikasi Barang</label>
+                            <div id="specContainer" class="d-flex flex-column gap-2 mb-2"></div>
+                            <button type="button" class="btn-add-spec text-poppins" onclick="addSpec('', true)"><i class="fas fa-plus"></i> Tambah Spesifikasi</button>
                         </div>
                     </div>
                 </div>
 
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="closeModal()">Batal</button>
-                    <button type="submit" name="simpan_barang" class="btn-submit" id="btnSubmit">Simpan Perubahan</button>
+                <div class="d-flex justify-content-end gap-3 pt-4 border-top mt-4">
+                    <button type="button" class="btn-cancel text-poppins" onclick="closeModal()">Batal</button>
+                    <button type="submit" name="simpan_barang" class="btn-submit text-poppins" id="btnSubmit">Simpan Perubahan</button>
                 </div>
             </form>
         </div>
@@ -633,12 +594,12 @@ foreach($inventaris as $inv) {
         function addSpec(val, autoFocus = true) {
             const container = document.getElementById('specContainer');
             const div = document.createElement('div');
-            div.className = 'spec-item';
+            div.className = 'd-flex align-items-center gap-2 w-100';
             
             const input = document.createElement('input');
             input.type = 'text';
             input.name = 'spesifikasi[]';
-            input.className = 'form-control';
+            input.className = 'form-control form-control-custom w-100 m-0';
             input.placeholder = 'Contoh: Kabel HDMI';
             input.value = val;
             
@@ -651,7 +612,7 @@ foreach($inventaris as $inv) {
 
             const btnDel = document.createElement('button');
             btnDel.type = 'button';
-            btnDel.className = 'btn-action del';
+            btnDel.className = 'btn border-0 text-danger p-2';
             btnDel.innerHTML = '<i class="far fa-trash-alt"></i>';
             btnDel.onclick = function() {
                 container.removeChild(div);

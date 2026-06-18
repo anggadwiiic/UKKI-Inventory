@@ -57,103 +57,93 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrasi - UKKI Inventory</title>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" type="image/png" href="assets/img/logo-ukki.png">
+    
+    <!-- BOOTSTRAP 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/png" href="../assets/img/logo-ukki.png">
     
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
-        body { background-color: #F8FAFC; display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem 0;}
-        .register-container { background: white; padding: 2.5rem 3rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); width: 100%; max-width: 600px; border: 1px solid #E2E8F0;}
+        :root { --teal-dark: #0F766E; --teal-hover: #134E4A; }
+        body { font-family: 'Outfit', sans-serif; background-color: #F8FAFC; }
         
-        .header-text { text-align: center; margin-bottom: 2rem; }
-        .header-text h2 { font-family: 'Outfit', sans-serif; color: #0F766E; font-size: 2.2rem; display: flex; align-items: center; justify-content: center; gap: 10px;}
-        .header-text p { color: #64748B; font-size: 0.95rem; margin-top: 0.5rem;}
+        .auth-card { box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05); border: 1px solid #E2E8F0; border-radius: 16px; }
         
-        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-        .form-group { margin-bottom: 1.2rem; position: relative;}
-        .form-group.full-width { grid-column: 1 / -1; }
-        
-        label { display: block; margin-bottom: 0.5rem; font-size: 0.9rem; color: #1E293B; font-weight: 500;}
-        
-        .input-wrapper { position: relative; }
-        
-        input { width: 100%; padding: 0.8rem 1rem; border: 1px solid #CBD5E1; border-radius: 8px; outline: none; transition: 0.3s; background: #F8FAFC; font-size: 0.95rem;}
-        input:focus { border-color: #0F766E; background: white; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1);}
+        .form-control-custom { font-family: 'Poppins', sans-serif; border: 1px solid #CBD5E1; border-radius: 8px; font-size: 0.95rem; background: #F8FAFC; transition: 0.3s; padding-right: 2.5rem; }
+        .form-control-custom:focus { border-color: var(--teal-dark); background: white; box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); outline: none;}
         
         .toggle-password { position: absolute; right: 1rem; top: 50%; transform: translateY(-50%); cursor: pointer; color: #94A3B8; transition: 0.2s;}
-        .toggle-password:hover { color: #0F766E; }
+        .toggle-password:hover { color: var(--teal-dark); }
 
-        .btn { width: 100%; padding: 0.9rem; background: #0F766E; color: white; border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: 0.3s; margin-top: 1rem; font-size: 1rem; display: flex; align-items: center; justify-content: center; gap: 8px;}
-        .btn:hover { background: #134E4A; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);}
+        .btn-teal { background: var(--teal-dark); color: white; border-radius: 8px; transition: 0.3s; border: none; font-family: 'Outfit', sans-serif;}
+        .btn-teal:hover { background: var(--teal-hover); color: white; transform: translateY(-2px); box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1); }
         
-        .alert { background: #FEE2E2; color: #B91C1C; padding: 1rem; border-radius: 8px; margin-bottom: 1.5rem; font-size: 0.9rem; border: 1px solid #FCA5A5; display: flex; align-items: center; gap: 10px;}
-        
-        .login-link { text-align: center; margin-top: 1.5rem; font-size: 0.9rem; color: #64748B; }
-        .login-link a { color: #0F766E; text-decoration: none; font-weight: 600; transition: 0.3s;}
-        .login-link a:hover { color: #134E4A; }
-
-        @media (max-width: 640px) {
-            .form-grid { grid-template-columns: 1fr; gap: 0;}
-            .register-container { padding: 2rem; margin: 1rem;}
-        }
+        .auth-link { color: var(--teal-dark); font-weight: 600; transition: 0.3s; text-decoration: none; }
+        .auth-link:hover { color: var(--teal-hover); }
+        .text-poppins { font-family: 'Poppins', sans-serif; }
     </style>
 </head>
-<body>
-    <div class="register-container">
-        <div class="header-text">
-            <h2>Daftar Akun</h2>
-            <p>Bergabunglah untuk mulai menyewa inventaris UKKI.</p>
+<body class="d-flex align-items-center justify-content-center min-vh-100 py-5 px-3 bg-light">
+
+    <div class="auth-card bg-white w-100 p-4 p-md-5" style="max-width: 600px;">
+        <div class="text-center mb-4 pb-2">
+            <h2 class="fs-2 mb-2 d-flex align-items-center justify-content-center gap-2" style="color: var(--teal-dark); font-weight: 700;">Daftar Akun</h2>
+            <p class="small text-muted mb-0 text-poppins" style="color: #64748B;">Bergabunglah untuk mulai menyewa inventaris UKKI.</p>
         </div>
         
         <?php if(isset($error)): ?>
-            <div class="alert"><i class="fas fa-exclamation-triangle"></i> <?= $error; ?></div>
+            <div class="alert alert-danger d-flex align-items-center gap-2 p-3 rounded-3 mb-4 border text-poppins" style="background: #FEE2E2; color: #B91C1C; border-color: #FCA5A5; font-size: 0.9rem;">
+                <i class="fas fa-exclamation-triangle"></i> <?= $error; ?>
+            </div>
         <?php endif; ?>
 
         <form action="" method="POST">
-            <div class="form-grid">
-                <div class="form-group full-width">
-                    <label>Nama Lengkap *</label>
-                    <input type="text" name="nama_lengkap" id="nama_input" required placeholder="Sesuai identitas asli" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
+            <div class="row g-3">
+                <div class="col-12">
+                    <label class="form-label small fw-medium text-poppins" style="color: #1E293B;">Nama Lengkap *</label>
+                    <input type="text" name="nama_lengkap" id="nama_input" class="form-control form-control-custom py-2" oninput="this.value = this.value.replace(/[^a-zA-Z\s]/g, '');">
                 </div>
                 
-                <div class="form-group">
-                    <label>NPM *</label>
-                    <input type="text" name="username" id="npm_input" required placeholder="Masukkan NPM Anda" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateNPM();">
+                <div class="col-sm-6">
+                    <label class="form-label small fw-medium text-poppins" style="color: #1E293B;">NPM *</label>
+                    <input type="text" name="username" id="npm_input" class="form-control form-control-custom py-2" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateNPM();">
                 </div>
 
-                <div class="form-group">
-                    <label>Email Aktif *</label>
-                    <input type="email" name="email" required placeholder="email@student.upnjatim.ac.id">
+                <div class="col-sm-6">
+                    <label class="form-label small fw-medium text-poppins" style="color: #1E293B;">Email Aktif *</label>
+                    <input type="email" name="email" class="form-control form-control-custom py-2" >
                 </div>
 
-                <div class="form-group full-width">
-                    <label>Nomor WhatsApp *</label>
-                    <input type="tel" name="no_telp" id="wa_input" required placeholder="08123456789" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateWA();">
+                <div class="col-12">
+                    <label class="form-label small fw-medium text-poppins" style="color: #1E293B;">Nomor WhatsApp *</label>
+                    <input type="tel" name="no_telp" id="wa_input" class="form-control form-control-custom py-2" inputmode="numeric" oninput="this.value = this.value.replace(/[^0-9]/g, ''); validateWA();">
                 </div>
 
-                <div class="form-group">
-                    <label>Password *</label>
-                    <div class="input-wrapper">
-                        <input type="password" name="password" id="pass_input" required placeholder="Minimal 6 karakter" oninput="validatePass();">
+                <div class="col-sm-6 position-relative">
+                    <label class="form-label small fw-medium text-poppins" style="color: #1E293B;">Password *</label>
+                    <div class="position-relative">
+                        <input type="password" name="password" id="pass_input" class="form-control form-control-custom py-2" required placeholder="Ketikkan password" oninput="validatePass();">
                         <i class="fas fa-eye toggle-password" onclick="toggleVisibility('pass_input', this)"></i>
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <label>Konfirmasi Password *</label>
-                    <div class="input-wrapper">
-                        <input type="password" name="konfirmasi_password" id="pass_confirm" required placeholder="Ketik ulang password" oninput="validatePass();">
+                <div class="col-sm-6 position-relative">
+                    <label class="form-label small fw-medium text-poppins" style="color: #1E293B;">Konfirmasi Password *</label>
+                    <div class="position-relative">
+                        <input type="password" name="konfirmasi_password" id="pass_confirm" class="form-control form-control-custom py-2" required placeholder="Ketik ulang password" oninput="validatePass();">
                         <i class="fas fa-eye toggle-password" onclick="toggleVisibility('pass_confirm', this)"></i>
                     </div>
                 </div>
             </div>
 
-            <button type="submit" class="btn"><i class="fas fa-paper-plane"></i> Buat Akun Sekarang</button>
+            <button type="submit" class="btn btn-teal w-100 py-3 mt-4 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                Buat Akun Sekarang
+            </button>
         </form>
 
-        <div class="login-link">
-            Sudah punya akun? <a href="login.php">Masuk di sini</a>
+        <div class="text-center mt-4 small text-poppins" style="color: #64748B;">
+            Sudah punya akun? <a href="login.php" class="auth-link">Masuk di sini</a>
         </div>
     </div>
 
